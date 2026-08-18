@@ -3516,3 +3516,25 @@ input:focus, select:focus, textarea:focus {
   html { font-size: 16.5px; }
   .kpi-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Gantt pianificazione — capienza tecnici ────────────────────────────
+   Le ore residue nel Gantt erano scritte con un ciano fisso (#a6f6ff) nato
+   per il tema scuro: su tema chiaro risultava quasi invisibile. Qui i colori
+   sono tokenizzati per tema, con contrasto sufficiente su entrambi i fondi. */
+:root {
+  --gantt-cap-free-text:   #6ee7b7;
+  --gantt-cap-free-bg:     rgba(34,211,160,0.16);
+  --gantt-cap-free-border: rgba(34,211,160,0.45);
+  --gantt-cap-full-text:   #fca5a5;
+  --gantt-cap-full-bg:     rgba(240,82,82,0.18);
+  --gantt-cap-full-border: rgba(240,82,82,0.50);
+}
+
+:root[data-theme='light'] {
+  --gantt-cap-free-text:   #0b6b4f;
+  --gantt-cap-free-bg:     rgba(16,185,129,0.14);
+  --gantt-cap-free-border: rgba(11,107,79,0.42);
+  --gantt-cap-full-text:   #a01430;
+  --gantt-cap-full-bg:     rgba(224,82,82,0.13);
+  --gantt-cap-full-border: rgba(160,20,48,0.40);
+}
