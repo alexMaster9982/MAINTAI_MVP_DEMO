@@ -22,6 +22,14 @@ TEXT_REPLACEMENTS = {
             "Aggiornato alla versione **{version}** ({date})",
         ),
     ],
+    # CLAUDE.md porta la stessa intestazione di versione: senza questa voce il file
+    # restava indietro rispetto al codice a ogni bump (drift 3.3.1 vs 3.3.2).
+    "CLAUDE.md": [
+        (
+            r'Aggiornato alla versione \*\*[^*]+\*\* \([^)]+\)',
+            "Aggiornato alla versione **{version}** ({date})",
+        ),
+    ],
 }
 
 
