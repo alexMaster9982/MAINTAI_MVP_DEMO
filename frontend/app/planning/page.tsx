@@ -63,7 +63,7 @@ const DAY_END_H = 19;
 const BASE_HOUR_W = 80;
 const BASE_DAY_W = 156;
 const BASE_ROW_H = 82;
-const LABEL_W = 238;
+const LABEL_W = 272;
 
 const ZoomContext = createContext<number>(1);
 function useZoom() { return useContext(ZoomContext); }
@@ -518,30 +518,31 @@ const TecnicoLabel = memo(function TecnicoLabel({ tecnico, capacity, rowIdx = 0 
     }}>
       <div style={{ width: "100%" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-          <div style={{ fontSize: 12, fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.3 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: "var(--text-primary)", lineHeight: 1.25, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
             {tecnico.nome} {tecnico.cognome ?? ""}
           </div>
           <div style={{
-            fontSize: 10, fontWeight: 900, color: remaining > 0 ? "#a6f6ff" : "#fca5a5",
-            border: `1px solid ${remaining > 0 ? "rgba(31,232,255,0.28)" : "rgba(224,82,82,0.45)"}`,
-            background: remaining > 0 ? "rgba(31,232,255,0.08)" : "rgba(224,82,82,0.13)",
-            borderRadius: 999, padding: "2px 7px", whiteSpace: "nowrap",
+            fontSize: 13, fontWeight: 900, letterSpacing: "0.01em",
+            color: remaining > 0 ? "var(--gantt-cap-free-text)" : "var(--gantt-cap-full-text)",
+            border: `1px solid ${remaining > 0 ? "var(--gantt-cap-free-border)" : "var(--gantt-cap-full-border)"}`,
+            background: remaining > 0 ? "var(--gantt-cap-free-bg)" : "var(--gantt-cap-full-bg)",
+            borderRadius: 999, padding: "3px 10px", whiteSpace: "nowrap", flexShrink: 0,
           }}>
             {tr("{ore}h libere", { ore: remaining.toFixed(1) })}
           </div>
         </div>
-        <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {tecnico.skill ?? tecnico.competenze ?? ""}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 7 }}>
-          <div style={{ flex: 1, height: 5, borderRadius: 999, background: "rgba(83,97,116,0.22)", overflow: "hidden" }}>
+          <div style={{ flex: 1, height: 7, borderRadius: 999, background: "rgba(83,97,116,0.22)", overflow: "hidden" }}>
             <div style={{
               width: `${usagePct}%`, height: "100%", borderRadius: 999,
               background: usagePct > 92 ? "#e05252" : usagePct > 72 ? "#f2b84b" : "#38d978",
               boxShadow: usagePct > 92 ? "0 0 10px rgba(224,82,82,0.45)" : "0 0 10px rgba(56,217,120,0.28)",
             }} />
           </div>
-          <span style={{ fontSize: 9, color: "var(--text-muted)", whiteSpace: "nowrap" }}>{assigned.toFixed(1)}/{cap.toFixed(1)}h</span>
+          <span style={{ fontSize: 12, fontWeight: 800, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>{assigned.toFixed(1)}/{cap.toFixed(1)}h</span>
         </div>
         {!totalOperativo && (
           <div style={{
@@ -724,11 +725,15 @@ const DayCell = memo(function DayCell({ tecnico, date, tickets, assignedHours, d
       )}
       <div style={{
         display: "flex", justifyContent: "center", alignItems: "center", gap: 4,
-        fontSize: 9, fontWeight: 900, color: cap.remaining > 0 ? "var(--text-secondary)" : "var(--text-danger)",
-        padding: "1px 4px 3px", flexShrink: 0, whiteSpace: "nowrap", lineHeight: 1,
+        alignSelf: "center", fontSize: 12, fontWeight: 900, letterSpacing: "0.01em",
+        color: cap.remaining > 0 ? "var(--gantt-cap-free-text)" : "var(--gantt-cap-full-text)",
+        background: cap.remaining > 0 ? "var(--gantt-cap-free-bg)" : "var(--gantt-cap-full-bg)",
+        border: `1px solid ${cap.remaining > 0 ? "var(--gantt-cap-free-border)" : "var(--gantt-cap-full-border)"}`,
+        borderRadius: 999, padding: "2px 8px", margin: "1px 0 4px",
+        flexShrink: 0, whiteSpace: "nowrap", lineHeight: 1.15,
       }}>
         <span>{cap.remaining.toFixed(1)}h</span>
-        <span style={{ opacity: 0.62 }}>/ {cap.capacity.toFixed(0)}h</span>
+        <span style={{ opacity: 0.75 }}>/ {cap.capacity.toFixed(0)}h</span>
       </div>
       {isOver && draggingTicket && (
         <div style={{
@@ -1921,7 +1926,7 @@ export default function PianificazionePage() {
               <div style={{ minWidth: timelineMinW }}>
                 {/* Header colonne */}
                 <div style={{
-                  display: "flex", height: 56,
+                  display: "flex", height: 68,
                   borderBottom: "1px solid var(--border-default)",
                   background: "var(--surface-2)",
                   position: "sticky", top: 0, zIndex: 10,
@@ -1930,12 +1935,12 @@ export default function PianificazionePage() {
                     width: LABEL_W, minWidth: LABEL_W, display: "flex", flexDirection: "column",
                     alignItems: "flex-start", justifyContent: "center",
                     padding: "0 14px", borderRight: "1px solid var(--border-default)",
-                    fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.08em", fontWeight: 700,
+                    fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.08em", fontWeight: 800,
                     position: "sticky", left: 0,
                     background: "var(--surface-2)", zIndex: 11,
                   }}>
                     <span style={{ lineHeight: 1.1 }}>{tr("TECNICO")}</span>
-                    <span style={{ fontSize: 9, lineHeight: 1.2, color: "#a6f6ff", marginTop: 3 }}>{tr("ORE RESIDUE")}</span>
+                    <span style={{ fontSize: 11, fontWeight: 800, lineHeight: 1.2, color: "var(--gantt-cap-free-text)", marginTop: 4 }}>{tr("ORE RESIDUE")}</span>
                   </div>
                   {view === "day"
                     ? Array.from({ length: DAY_END_H - DAY_START_H }, (_, i) => (
@@ -1965,7 +1970,14 @@ export default function PianificazionePage() {
                             }}>
                               {format(day, "d")}
                             </div>
-                            <div style={{ fontSize: compactHeader ? 8 : 9, color: (cap?.remaining ?? 0) > 0 ? "#a6f6ff" : "#fca5a5", fontWeight: 900, marginTop: 2, whiteSpace: "nowrap", lineHeight: 1.1 }}>
+                            <div style={{
+                              fontSize: compactHeader ? 11 : 12, fontWeight: 900, marginTop: 3,
+                              whiteSpace: "nowrap", lineHeight: 1.1,
+                              color: (cap?.remaining ?? 0) > 0 ? "var(--gantt-cap-free-text)" : "var(--gantt-cap-full-text)",
+                              background: (cap?.remaining ?? 0) > 0 ? "var(--gantt-cap-free-bg)" : "var(--gantt-cap-full-bg)",
+                              border: `1px solid ${(cap?.remaining ?? 0) > 0 ? "var(--gantt-cap-free-border)" : "var(--gantt-cap-full-border)"}`,
+                              borderRadius: 999, padding: compactHeader ? "1px 6px" : "2px 8px",
+                            }}>
                               {(cap?.remaining ?? 0).toFixed(1)}h / {(cap?.capacity ?? 0).toFixed(0)}h
                             </div>
                           </div>
